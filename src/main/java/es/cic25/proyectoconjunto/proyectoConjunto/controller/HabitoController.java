@@ -1,6 +1,5 @@
 package es.cic25.proyectoconjunto.proyectoConjunto.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.cic25.proyectoconjunto.proyectoConjunto.model.Categoria;
 import es.cic25.proyectoconjunto.proyectoConjunto.model.Habito;
 import es.cic25.proyectoconjunto.proyectoConjunto.service.HabitoService;
 
@@ -43,6 +41,11 @@ public class HabitoController {
     @PostMapping
     public Habito create(@RequestBody Habito habito) {
 
+        if (habito.getId() != 0) {
+            throw new ModificacionSecurityException("No puedes pasar un id distinto de 0");
+        }
+
+
         habito = habitoService.create(habito);
 
         return habito;
@@ -50,7 +53,7 @@ public class HabitoController {
 
     @PutMapping
     public void update(@RequestBody Habito habito) {
-
+        habitoService.update(habito);
     }
 
     @DeleteMapping("/{id}")

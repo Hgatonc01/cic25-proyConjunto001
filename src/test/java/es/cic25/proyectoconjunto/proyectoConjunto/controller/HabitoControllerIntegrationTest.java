@@ -1,7 +1,5 @@
 package es.cic25.proyectoconjunto.proyectoConjunto.controller;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Optional;
 
 
@@ -9,13 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 // import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.body;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -64,6 +60,26 @@ public class HabitoControllerIntegrationTest {
                                 assertTrue(registroRealmenteCreado.isPresent());
                                 
         });
+
+    }
+
+    @Test
+    void testCreateIntentandoModificacion() throws Exception {
+
+        Habito habito = new Habito();
+        habito.setId(3);
+        habito.setNombre("Meditar");
+        habito.setDescripcion("Meditar cada mañana");
+        habito.setEstado(true);
+        habito.setCategoria(Categoria.SALUD);
+
+        // ObjectMapper objectMapper = new ObjectMapper();
+        String habitoJson = objectMapper.writeValueAsString(habito);
+
+        mockMvc.perform(post("/habito")
+                .contentType("application/json")
+                .content(habitoJson))
+                .andExpect(status().isBadRequest());
 
     }
 
